@@ -3,6 +3,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.3.4"
     id("io.micronaut.aot") version "4.3.4"
+
+    id 'io.franzbecker.gradle-lombok' version '1.14'
 }
 
 version = "0.1"
@@ -21,6 +23,10 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("io.micronaut.rxjava2:micronaut-rxjava2-http-server-netty")
     testImplementation("io.micronaut:micronaut-http-client")
+
+
+    compileOnly("org.projectlombok:lombok:1.18.30")
+//    implementation("io.zipkin.brave:brave-context-slf4j:5.13.9")
 }
 
 
