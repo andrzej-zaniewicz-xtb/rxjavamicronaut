@@ -1,7 +1,8 @@
 package com.example;
-;
-import io.reactivex.Observable;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface UserService {
-    Observable<User> fetchUsers();
+    Flux<User> fetchUsers();
 }
