@@ -19,16 +19,9 @@ public class UserController {
 
     @Get
     public Flux<User> getUsers() {
-        // Create a new Context Registry (you can use a global too)
-        ContextRegistry registry = new ContextRegistry();
-        // Register thread local accessors (you can use SPI too)
-        registry.registerThreadLocalAccessor(new ObservationThreadLocalAccessor());
-
-        ObservationThreadLocalHolder.setValue("hello");
-
-        log.info(" Start servcie" + ObservationThreadLocalHolder.getValue());
+        log.info(" Start servcie");
         return userService.fetchUsers()
-                .doOnNext(user -> log.info(ObservationThreadLocalHolder.getValue() + " Fetched user: " + user.getName()))
+                .doOnNext(user -> log.info(" Fetched user: " + user.getName()))
                 .onErrorResume(throwable -> {
                     // Log the error
 //                    log.error("Error fetching users: " + throwable.m);
