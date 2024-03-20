@@ -27,7 +27,7 @@ public class UserController {
                 .doOnNext(user -> log.info(" Delayed user: " + user.getName()))
                 .onErrorResume(throwable -> {
                     // Log the error
-//                    log.error("Error fetching users: " + throwable.m);
+                    log.error("Error fetching users: ", throwable);
 
                     // Return an "empty" user to indicate an error
                     User errorUser = new User();
