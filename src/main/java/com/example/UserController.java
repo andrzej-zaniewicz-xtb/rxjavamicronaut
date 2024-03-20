@@ -1,5 +1,6 @@
 package com.example;
 
+import io.micrometer.context.ContextRegistry;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.reactivex.Observable;
@@ -18,9 +19,16 @@ public class UserController {
 
     @Get
     public Observable<User> getUsers() {
-        log.info(" Start servcie");
+        // Create a new Context Registry (you can use a global too)
+        ContextRegistry registry = new ContextRegistry();
+        // Register thread local accessors (you can use SPI too)
+        registry.registerThreadLocalAccessor(new ObservationThreadLocalAccessor());
+
+        ObservationThreadLocalHolder.setValue("hello");
+
+        log.info(" Start servcie" + ObservationThreadLocalHolder.getValue());
         return userService.fetchUsers()
-                .doOnNext(user -> log.info(" Fetched user: " + user.getName()))
+                .doOnNext(user -> log.info(ObservationThreadLocalHolder.getValue() + " Fetched user: " + user.getName()))
                 .onErrorReturn(throwable -> {
                     // Log the error
                     log.error("Error fetching users: " + throwable.getMessage());
