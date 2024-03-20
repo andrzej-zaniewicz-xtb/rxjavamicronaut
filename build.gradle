@@ -27,8 +27,6 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.30")
     implementation("io.micronaut.tracing:micronaut-tracing-jaeger")
-
-    implementation("io.micrometer:micrometer-core:1.12.4")
     implementation("io.micrometer:context-propagation:1.1.0")
 }
 

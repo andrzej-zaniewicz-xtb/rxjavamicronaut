@@ -1,11 +1,12 @@
 package com.example;
 
-import io.micrometer.context.ContextRegistry;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @Controller("/users")
 @Slf4j
@@ -22,6 +23,8 @@ public class UserController {
         log.info(" Start servcie");
         return userService.fetchUsers()
                 .doOnNext(user -> log.info(" Fetched user: " + user.getName()))
+                .delayElements(Duration.ofMillis(500))
+                .doOnNext(user -> log.info(" Delayed user: " + user.getName()))
                 .onErrorResume(throwable -> {
                     // Log the error
 //                    log.error("Error fetching users: " + throwable.m);
