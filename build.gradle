@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    //micronaut
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
@@ -28,15 +29,23 @@ dependencies {
     implementation("io.micronaut.reactor:micronaut-reactor")
     implementation("io.micronaut.reactor:micronaut-reactor-http-client")
 
-
+    //śledzenie min
     compileOnly("org.projectlombok:lombok:1.18.30")
     implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
     implementation("io.micrometer:context-propagation:1.1.0")
 
+    // Sledzenie / tracing z ipaxa - to robi tracid w grpc
+//    implementation("io.micronaut:micronaut-tracing")
+    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
+//    implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
+//    implementation 'io.micronaut.tracing:micronaut-tracing-annotation'
+
+    //grpc
     implementation("io.micronaut:micronaut-discovery-core")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
     implementation("javax.annotation:javax.annotation-api")
 
+    //reactor-grpc
     implementation("com.salesforce.servicelibs:reactor-grpc-stub:1.2.4")
 
 }
