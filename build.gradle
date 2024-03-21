@@ -1,7 +1,7 @@
 import com.google.protobuf.gradle.*
 
 plugins {
-    id("groovy") 
+    id("groovy")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.3.4"
     id("io.micronaut.aot") version "4.3.4"
@@ -36,6 +36,9 @@ dependencies {
     implementation("io.micronaut:micronaut-discovery-core")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
     implementation("javax.annotation:javax.annotation-api")
+
+    implementation("com.salesforce.servicelibs:reactor-grpc-stub:1.2.4")
+
 }
 
 
@@ -52,6 +55,7 @@ sourceSets {
         java {
             srcDirs("build/generated/source/proto/main/grpc")
             srcDirs("build/generated/source/proto/main/java")
+            srcDirs("build/generated/source/proto/main/reactor")
         }
     }
 }
@@ -60,9 +64,13 @@ protobuf {
     protoc { artifact = "com.google.protobuf:protoc:3.25.2" }
     plugins {
         grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.61.0" }
+        reactor { artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.4" }
     }
     generateProtoTasks {
-        all()*.plugins { grpc {} }
+        all()*.plugins {
+            grpc {}
+            reactor {}
+        }
     }
 }
 
@@ -75,8 +83,8 @@ micronaut {
         annotations("com.example.*")
     }
     aot {
-    // Please review carefully the optimizations enabled below
-    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
         optimizeServiceLoading = false
         convertYamlToJava = false
         precomputeOperations = true
