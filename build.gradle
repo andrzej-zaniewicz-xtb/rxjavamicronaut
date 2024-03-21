@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.*
+
 plugins {
     id("groovy") 
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -5,6 +7,8 @@ plugins {
     id("io.micronaut.aot") version "4.3.4"
 
     id 'io.franzbecker.gradle-lombok' version '1.14'
+
+    id("com.google.protobuf") version "0.9.2"
 }
 
 version = "0.1"
@@ -28,6 +32,10 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
     implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
     implementation("io.micrometer:context-propagation:1.1.0")
+
+    implementation("io.micronaut:micronaut-discovery-core")
+    implementation("io.micronaut.grpc:micronaut-grpc-runtime")
+    implementation("javax.annotation:javax.annotation-api")
 }
 
 
@@ -39,6 +47,24 @@ java {
     targetCompatibility = JavaVersion.toVersion("17")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/source/proto/main/grpc")
+            srcDirs("build/generated/source/proto/main/java")
+        }
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.25.2" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.61.0" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
 
 graalvmNative.toolchainDetection = false
 micronaut {
