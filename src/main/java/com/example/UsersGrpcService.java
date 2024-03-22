@@ -4,10 +4,15 @@ import helloworld.GreeterGrpc;
 import helloworld.ReactorGreeterGrpc;
 import helloworld.Users;
 import io.grpc.stub.StreamObserver;
+import io.opentracing.Tracer;
+import io.opentracing.contrib.reactor.TracedSubscriber;
+import io.opentracing.util.GlobalTracer;
+import io.opentracing.util.ThreadLocalScopeManager;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -16,6 +21,7 @@ import java.time.Duration;
 @Slf4j
 public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
 
+    protected static final Tracer tracer = GlobalTracer.get();
     private final UserService userService;
 
     public UsersGrpcService(UserService userService) {
@@ -24,6 +30,8 @@ public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
 
     @Override
     public Flux<Users.HelloResponse> sayHello(Mono<Users.HelloRequest> request) {
+        Hooks.onEachOperator(TracedSubscriber.asOperator(tracer));
+        Hooks.onLastOperator(TracedSubscriber.asOperator(tracer));
         log.info(" Start grpc");
         return userService.fetchUsers()
                 .doOnNext(user -> log.info(" Fetched user: " + user.getName()))

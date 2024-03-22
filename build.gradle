@@ -43,8 +43,8 @@ dependencies {
     //to dodanie traceId na requeście i w sumie też ogarnia ten kontekst - Slf4jScopeDecorator.java
     implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
     // Sledzenie / tracing z ipaxa - to robi tracid w grpc
-    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
-
+    implementation 'io.opentracing.contrib:opentracing-grpc:0.2.3'
+    implementation("io.opentracing.contrib:opentracing-reactor:0.2.0")
 
 }
 
