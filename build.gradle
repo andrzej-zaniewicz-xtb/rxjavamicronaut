@@ -28,19 +28,7 @@ dependencies {
     testImplementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.reactor:micronaut-reactor")
     implementation("io.micronaut.reactor:micronaut-reactor-http-client")
-
-    //śledzenie min
     compileOnly("org.projectlombok:lombok:1.18.30")
-    //logowanie w http
-    implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
-    implementation("io.micrometer:context-propagation:1.1.0")
-
-    // Sledzenie / tracing z ipaxa - to robi tracid w grpc
-//    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
-
-//    implementation("io.micronaut:micronaut-tracing")
-//    implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
-//    implementation 'io.micronaut.tracing:micronaut-tracing-annotation'
 
     //grpc
     implementation("io.micronaut:micronaut-discovery-core")
@@ -49,6 +37,14 @@ dependencies {
 
     //reactor-grpc
     implementation("com.salesforce.servicelibs:reactor-grpc-stub:1.2.4")
+
+    //śledzenie minimum
+    //logowanie w http
+    //to dodanie traceId na requeście i w sumie też ogarnia ten kontekst - Slf4jScopeDecorator.java
+    implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
+    // Sledzenie / tracing z ipaxa - to robi tracid w grpc
+    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
+
 
 }
 
