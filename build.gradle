@@ -31,6 +31,7 @@ dependencies {
 
     //śledzenie min
     compileOnly("org.projectlombok:lombok:1.18.30")
+    //logowanie w http
     implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
     implementation("io.micrometer:context-propagation:1.1.0")
 
