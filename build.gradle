@@ -35,8 +35,9 @@ dependencies {
     implementation("io.micrometer:context-propagation:1.1.0")
 
     // Sledzenie / tracing z ipaxa - to robi tracid w grpc
+//    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
+
 //    implementation("io.micronaut:micronaut-tracing")
-    runtimeOnly 'io.opentracing.contrib:opentracing-grpc:0.2.3'
 //    implementation("io.micronaut.tracing:micronaut-tracing-brave-http")
 //    implementation 'io.micronaut.tracing:micronaut-tracing-annotation'
 

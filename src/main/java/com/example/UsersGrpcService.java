@@ -25,10 +25,9 @@ public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
     @Override
     public Flux<Users.HelloResponse> sayHello(Mono<Users.HelloRequest> request) {
         log.info(" Start grpc");
-        return request
-                .doOnNext(req -> log.info(" Fetched user: " + req.getName()))
-                .flatMapMany(req -> userService.fetchUsers())
-                .delayElements(Duration.ofMillis(50))
+        return userService.fetchUsers()
+                .doOnNext(user -> log.info(" Fetched user: " + user.getName()))
+                .delayElements(Duration.ofMillis(500))
                 .doOnNext(user -> log.info(" Delayed user: " + user.getName()))
                 .onErrorResume(throwable -> {
                     // Log the error
@@ -41,11 +40,9 @@ public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
                     errorUser.setEmail("error@example.com");
                     return Mono.just(errorUser);
                 })
-                .map(request1 ->
-                        Users.HelloResponse.newBuilder()
-                                .setMessage(request1.getName())
-                                .build()
-                );
+                .map(user -> Users.HelloResponse.newBuilder()
+                        .setMessage(user.getName())
+                        .build());
 
     }
 
