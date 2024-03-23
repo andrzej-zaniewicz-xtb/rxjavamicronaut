@@ -21,7 +21,6 @@ import java.time.Duration;
 @Slf4j
 public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
 
-    protected static final Tracer tracer = GlobalTracer.get();
     private final UserService userService;
 
     public UsersGrpcService(UserService userService) {
@@ -30,8 +29,6 @@ public class UsersGrpcService extends ReactorGreeterGrpc.GreeterImplBase {
 
     @Override
     public Flux<Users.HelloResponse> sayHello(Mono<Users.HelloRequest> request) {
-        Hooks.onEachOperator(TracedSubscriber.asOperator(tracer));
-        Hooks.onLastOperator(TracedSubscriber.asOperator(tracer));
         log.info(" Start grpc");
         return userService.fetchUsers()
                 .doOnNext(user -> log.info(" Fetched user: " + user.getName()))
